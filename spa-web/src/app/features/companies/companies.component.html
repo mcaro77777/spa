@@ -1,0 +1,20 @@
+<main class="companies-shell">
+  <header><a class="brand"><span>M</span>MiSpA IA</a><button class="logout" type="button" (click)="salir()"><i class="pi pi-sign-out"></i> Salir</button></header>
+  <section class="companies-content">
+    <div class="heading"><span class="eyebrow">ESPACIO DE TRABAJO</span><h1>{{ auth.session()?.empresas?.length ? 'Elige una empresa' : 'Registra tu empresa' }}</h1><p>Los datos y permisos se mantienen separados para cada empresa.</p></div>
+    @if(error()){<div class="error"><i class="pi pi-exclamation-circle"></i>{{error()}}</div>}
+    @if(auth.session()?.empresas?.length && !creando()){
+      <div class="company-grid">
+        @for(empresa of auth.session()?.empresas;track empresa.id){<button class="company-card" type="button" (click)="seleccionar(empresa.id)" [disabled]="cargando()"><span class="company-icon"><i class="pi pi-building"></i></span><span class="company-copy"><strong>{{empresa.razonSocial}}</strong><small>{{empresa.rut}} · {{empresa.rol}}</small></span><i class="pi pi-arrow-right"></i></button>}
+        <button class="company-card add" type="button" (click)="creando.set(true)"><span class="company-icon"><i class="pi pi-plus"></i></span><span class="company-copy"><strong>Nueva empresa</strong><small>Crear otro espacio separado</small></span></button>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="crear()">
+        <div class="form-head"><h2>Datos principales</h2>@if(auth.session()?.empresas?.length){<button type="button" (click)="creando.set(false)">Volver</button>}</div>
+        <div class="grid"><label class="wide"><span>Razón social *</span><input formControlName="razonSocial" placeholder="Empresa Ejemplo SpA"></label><label><span>Nombre de fantasía</span><input formControlName="nombreFantasia" placeholder="Mi empresa"></label><label><span>RUT *</span><input formControlName="rut" placeholder="76.086.428-5"></label><label class="wide"><span>Giro</span><input formControlName="giro" placeholder="Servicios de tecnología"></label><label><span>Correo</span><input formControlName="correo" type="email" placeholder="contacto@empresa.cl"></label><label><span>Teléfono</span><input formControlName="telefono" placeholder="+56 9 ..."></label><label class="wide"><span>Dirección</span><input formControlName="direccion"></label><label><span>Comuna</span><input formControlName="comuna"></label><label><span>Región</span><input formControlName="region"></label><label class="wide"><span>Régimen tributario inicial</span><select formControlName="regimenCodigo"><option value="pro_pyme_general_14d3">Pro Pyme General — Art. 14 D N.º 3</option><option value="pro_pyme_transparente_14d8">Pro Pyme Transparente — Art. 14 D N.º 8</option></select><small>Podrás revisarlo con tu contador.</small></label></div>
+        <button class="primary" type="submit" [disabled]="cargando()">@if(cargando()){<i class="pi pi-spin pi-spinner"></i>} Crear empresa y continuar</button>
+      </form>
+    }
+  </section>
+</main>
+

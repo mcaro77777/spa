@@ -1,0 +1,38 @@
+<main class="access-shell">
+  <section class="brand-panel">
+    <a class="brand" href="/" aria-label="MiSpA IA"><span class="brand-mark">M</span><span>MiSpA <b>IA</b></span></a>
+    <div class="brand-copy">
+      <span class="eyebrow">TU EMPRESA, MÁS CLARA</span>
+      <h1>Decisiones tributarias con contexto, no con intuición.</h1>
+      <p>Ordena compras y ventas, conoce tu IVA estimado y prepara información revisable por tu contador.</p>
+      <div class="trust-list"><span><i class="pi pi-check"></i> Información trazable</span><span><i class="pi pi-check"></i> Datos separados por empresa</span><span><i class="pi pi-check"></i> Cálculos transparentes</span></div>
+    </div>
+    <small>Herramienta de apoyo. No reemplaza la declaración oficial ni la revisión profesional.</small>
+  </section>
+
+  <section class="form-panel">
+    <div class="form-card">
+      <div class="mobile-brand"><span class="brand-mark">M</span> MiSpA IA</div>
+      <span class="eyebrow">BIENVENIDO</span>
+      <h2>{{ modo() === 'login' ? 'Ingresa a tu espacio' : 'Crea tu cuenta' }}</h2>
+      <p class="intro">{{ modo() === 'login' ? 'Revisa tu empresa y continúa donde quedaste.' : 'Comienza con tus datos y luego registra tu empresa.' }}</p>
+      <div class="mode-tabs" role="tablist">
+        <button type="button" [class.active]="modo() === 'login'" (click)="cambiarModo('login')">Ingresar</button>
+        <button type="button" [class.active]="modo() === 'registro'" (click)="cambiarModo('registro')">Crear cuenta</button>
+      </div>
+      <form [formGroup]="formulario" (ngSubmit)="enviar()" novalidate>
+        @if (modo() === 'registro') {
+          <div class="two-cols">
+            <label><span>Nombre</span><input formControlName="nombre" autocomplete="given-name" placeholder="Tu nombre"></label>
+            <label><span>Apellido</span><input formControlName="apellido" autocomplete="family-name" placeholder="Tu apellido"></label>
+          </div>
+        }
+        <label><span>Correo</span><input formControlName="correo" type="email" autocomplete="email" placeholder="nombre@empresa.cl"></label>
+        <label><span>Contraseña</span><div class="password"><input formControlName="contrasena" [type]="mostrarClave() ? 'text' : 'password'" [autocomplete]="modo() === 'login' ? 'current-password' : 'new-password'" placeholder="Mínimo 10 caracteres"><button type="button" (click)="mostrarClave.set(!mostrarClave())" [attr.aria-label]="mostrarClave() ? 'Ocultar contraseña' : 'Mostrar contraseña'"><i [class]="mostrarClave() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i></button></div></label>
+        @if (error()) { <div class="form-error" role="alert"><i class="pi pi-exclamation-circle"></i>{{ error() }}</div> }
+        <button class="submit" type="submit" [disabled]="cargando()">@if(cargando()){<i class="pi pi-spin pi-spinner"></i>} {{ modo() === 'login' ? 'Ingresar' : 'Crear mi cuenta' }}</button>
+      </form>
+    </div>
+  </section>
+</main>
+

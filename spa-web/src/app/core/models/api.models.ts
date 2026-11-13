@@ -1,0 +1,15 @@
+export interface EmpresaResumen { id: string; razonSocial: string; nombreFantasia?: string | null; rut: string; estado?: string; rol: string }
+export interface Sesion { usuario: { id: string; correo: string }; empresaActivaId: string | null; empresas: EmpresaResumen[] }
+export interface TokenResponse { accessToken: string; expiresIn: number; empresaId: string | null }
+export interface ProblemaApi { type?: string; title: string; status: number; detail?: string; code?: string }
+export interface Indicador { codigo: string; etiqueta: string; valor: string; estado: 'confirmado'|'estimado'|'incompleto'|'pendiente_revision'; detalle?: string }
+export interface DashboardResumen { year: number; month: number; updatedAt: string; indicators: Indicador[] }
+export interface Documento {
+  id: string; direccion: 'compra'|'venta'; tipoDocumento: string; folio: string;
+  rutEmisor: string; razonSocialEmisor?: string | null; rutReceptor: string; razonSocialReceptor?: string | null;
+  fechaEmision: string; fechaVencimiento?: string | null; montoNeto: string; montoExento: string;
+  montoIva: string; montoTotal: string; estadoPago: string; estadoRevision: string;
+}
+export interface PaginaDocumentos { items: Documento[]; page: number; pageSize: number; total: number; totalPages: number }
+export interface Importacion { id: string; tipo: string; estado: string; totalFilas: number; filasCreadas: number; filasDuplicadas: number; filasRechazadas: number; fechaCreacion?: string }
+

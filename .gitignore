@@ -1,0 +1,6 @@
+.env
+*.log
+inventario-api/
+inventario-web/
+PROMPT_MISPA_IA.md
+.qa-*

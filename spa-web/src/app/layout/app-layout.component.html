@@ -1,0 +1,11 @@
+<div class="app-shell">
+  <aside [class.open]="menuAbierto()">
+    <div class="brand"><span>M</span><strong>MiSpA <b>IA</b></strong><button type="button" (click)="cerrar()"><i class="pi pi-times"></i></button></div>
+    <div class="company"><span>{{auth.empresaActiva()?.razonSocial?.charAt(0) || 'E'}}</span><div><strong>{{auth.empresaActiva()?.razonSocial}}</strong><small>{{auth.empresaActiva()?.rut}}</small></div><button title="Cambiar empresa" type="button" (click)="cambiarEmpresa()"><i class="pi pi-angle-up"></i><i class="pi pi-angle-down"></i></button></div>
+    <nav><small>GESTIÓN</small>@for(item of items;track item.route){<a [routerLink]="item.route" routerLinkActive="active" (click)="cerrar()"><i [class]="item.icon"></i><span>{{item.label}}</span></a>}<small>PRÓXIMAMENTE</small><a class="disabled"><i class="pi pi-building-columns"></i><span>Conciliación</span><em>Fase 2</em></a><a class="disabled"><i class="pi pi-sparkles"></i><span>Asistente IA</span><em>Fase 4</em></a></nav>
+    <div class="aside-footer"><button type="button" (click)="salir()"><i class="pi pi-sign-out"></i> Cerrar sesión</button><small>Apoyo tributario · No reemplaza al SII</small></div>
+  </aside>
+  @if(menuAbierto()){<button class="backdrop" type="button" aria-label="Cerrar menú" (click)="cerrar()"></button>}
+  <section class="workspace"><header><button class="menu-toggle" type="button" (click)="menuAbierto.set(true)"><i class="pi pi-bars"></i></button><div class="status"><span></span> Datos protegidos</div><div class="user"><span>{{auth.session()?.usuario?.correo?.charAt(0)?.toUpperCase()}}</span><div><strong>{{auth.session()?.usuario?.correo}}</strong><small>Sesión segura</small></div></div></header><router-outlet /></section>
+</div>
+

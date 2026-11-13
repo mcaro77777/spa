@@ -1,0 +1,4 @@
+direction;document_type;folio;issuer_rut;recipient_rut;issue_date;due_date;net_amount_clp;exempt_amount_clp;vat_amount_clp;other_taxes_clp;total_amount_clp;payment_status
+venta;factura;1001;76086428-5;99999999-9;2026-01-15;2026-02-14;100000;0;19000;0;119000;pendiente
+compra;factura;501;76192083-9;76086428-5;2026-01-18;2026-02-17;504202;0;95798;0;600000;pagado
+
