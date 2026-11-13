@@ -20,4 +20,9 @@ export interface MovimientoBancario {
 export interface PaginaMovimientos { items:MovimientoBancario[]; page:number; pageSize:number; total:number; totalPages:number }
 export interface ResumenBancario { total:number; pendientes:number; conciliados:number; gastos:number; movimientosPropietario:number; alertas:number }
 export interface CandidatoConciliacion { id:string; tipoDocumento:string; folio:string; fechaEmision:string; montoTotal:string; montoPagado:string; contraparte:string }
+export interface ReglaTributaria { anioComercial:number; anioTributario:number; regimen:string; tasaIDPC:string; tasaPPMHasta50000UF:string; tasaPPMSobre50000UF:string; version:string; fuenteOficial:string; fechaConsulta:string; estado:string }
+export interface ResultadoTributario { codigo:string; nombre:string; valor:string; estado:string; formula:string }
+export interface CalculoTributario { id:string; anioComercial:number; estado:string; resultadoPrincipal:string; versionReglas:string; advertencias:string[]; datosFaltantes:string[]; fechaCreacion:string; resultados?:ResultadoTributario[]; fuenteOficial?:string }
+export interface RespuestaAsistente { conversacionId:string; respuesta:string; proveedor:string; modelo:string; herramientasUsadas:string[]; referencias:string[]; advertencias:string[] }
+export interface ConversacionIA { id:string; titulo:string; proveedor?:string|null; modelo?:string|null; fechaModificacion:string }
 

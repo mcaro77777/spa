@@ -12,7 +12,9 @@ export const routes: Routes = [
       { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent) },
       { path: 'documentos', loadComponent: () => import('./features/documents/documents.component').then((m) => m.DocumentsComponent) },
       { path: 'importaciones', loadComponent: () => import('./features/imports/imports.component').then((m) => m.ImportsComponent) },
-      { path: 'conciliacion', loadComponent: () => import('./features/banking/banking.component').then((m) => m.BankingComponent) }
+      { path: 'conciliacion', loadComponent: () => import('./features/banking/banking.component').then((m) => m.BankingComponent) },
+      { path: 'tributario', loadComponent: () => import('./features/tax/tax.component').then((m) => m.TaxComponent) },
+      { path: 'asistente', loadComponent: () => import('./features/assistant/assistant.component').then((m) => m.AssistantComponent) }
     ]
   },
   { path: '**', redirectTo: 'app/dashboard' }

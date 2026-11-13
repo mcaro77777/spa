@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: MiSpA API
-  version: 0.2.0
+  version: 0.4.0
   description: API del MVP de apoyo tributario MiSpA IA. Los cálculos son estimaciones y no sustituyen declaraciones oficiales.
 servers:
   - url: /api
@@ -238,6 +238,55 @@ paths:
         - { in: query, name: month, schema: { type: integer, minimum: 1, maximum: 12 } }
       responses:
         '200': { description: Estimación trazable de IVA }
+  /tax/rules:
+    get:
+      summary: Consulta la regla oficial versionada de Pro Pyme General
+      parameters:
+        - { in: query, name: year, required: true, schema: { type: integer, minimum: 2025, maximum: 2028 } }
+      responses:
+        '200': { description: Tasas, versión, fuente y fecha de consulta }
+        '404': { $ref: '#/components/responses/Problema' }
+  /tax/calculations:
+    get:
+      summary: Lista proyecciones tributarias de la empresa activa
+      responses: { '200': { description: Historial de proyecciones } }
+    post:
+      summary: Genera una proyección Pro Pyme General trazable
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [anioComercial, ingresosPreviosSobre50000UF]
+              properties:
+                anioComercial: { type: integer, minimum: 2025, maximum: 2028 }
+                ingresosPreviosSobre50000UF: { type: boolean }
+      responses:
+        '201': { description: Proyección guardada con entradas, resultados y advertencias }
+        '422': { $ref: '#/components/responses/Problema' }
+  /assistant/chat:
+    post:
+      summary: Explica datos internos mediante herramientas de solo lectura
+      description: Usa el motor local por defecto. El proveedor externo requiere configuración y consentimiento explícito por mensaje.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mensaje, consentimientoExterno]
+              properties:
+                conversacionId: { type: string, format: uuid }
+                mensaje: { type: string, minLength: 2, maxLength: 2000 }
+                consentimientoExterno: { type: boolean }
+      responses:
+        '200': { description: Respuesta, herramientas, referencias y advertencias }
+        '422': { $ref: '#/components/responses/Problema' }
+  /assistant/conversations:
+    get:
+      summary: Lista las conversaciones del usuario dentro de la empresa activa
+      responses: { '200': { description: Conversaciones aisladas por usuario y empresa } }
   /reports/purchases-sales.xlsx:
     get:
       summary: Descarga compras y ventas del período en Excel

@@ -26,6 +26,9 @@ services:
       JWT_SECRET: ${JWT_SECRET:?Defina JWT_SECRET con al menos 32 caracteres}
       UPLOAD_DIR: /data/uploads
       CLIENT_APP_DIR: /app/ClientApp
+      AI_PROVIDER: ${AI_PROVIDER:-local}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
     ports:
       - "8080:8080"
     volumes:

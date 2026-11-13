@@ -52,6 +52,11 @@ func NuevoServidor(cfg configuracion.Configuracion, db *sql.DB, logger *slog.Log
 	mux.Handle("GET /api/banking/summary", empresa(s.resumenBancario))
 	mux.Handle("GET /api/dashboard/summary", empresa(s.resumenDashboard))
 	mux.Handle("GET /api/tax/vat-estimate", empresa(s.estimacionIVA))
+	mux.Handle("GET /api/tax/rules", empresa(s.reglasTributarias))
+	mux.Handle("GET /api/tax/calculations", empresa(s.listarCalculosTributarios))
+	mux.Handle("POST /api/tax/calculations", empresa(s.calcularPrimeraCategoria))
+	mux.Handle("POST /api/assistant/chat", empresa(s.asistenteChat))
+	mux.Handle("GET /api/assistant/conversations", empresa(s.listarConversacionesIA))
 	mux.Handle("GET /api/reports/purchases-sales.xlsx", empresa(s.reporteComprasVentasExcel))
 	mux.Handle("GET /api/reports/vat-estimate.pdf", empresa(s.reporteIVAPDF))
 	mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {

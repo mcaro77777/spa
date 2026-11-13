@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { CandidatoConciliacion, CuentaBancaria, DashboardResumen, EmpresaResumen, Importacion, PaginaDocumentos, PaginaMovimientos, ResumenBancario } from '../models/api.models';
+import { CalculoTributario, CandidatoConciliacion, ConversacionIA, CuentaBancaria, DashboardResumen, EmpresaResumen, Importacion, PaginaDocumentos, PaginaMovimientos, ReglaTributaria, RespuestaAsistente, ResumenBancario } from '../models/api.models';
 
 export interface CrearEmpresa {
   razonSocial: string; nombreFantasia: string; rut: string; giro: string; correo: string;
@@ -38,5 +38,10 @@ export class SpaApiService {
   clasificarMovimiento(id:string,datos:{clasificacion:string;justificacion:string}):Observable<{id:string}>{return this.http.patch<{id:string}>(`${this.api}/bank-transactions/${id}/classification`,datos)}
   candidatosConciliacion(id:string):Observable<CandidatoConciliacion[]>{return this.http.get<CandidatoConciliacion[]>(`${this.api}/bank-transactions/${id}/candidates`)}
   conciliarMovimiento(id:string,datos:{documentoId:string;monto:string;observacion:string}):Observable<{id:string}>{return this.http.post<{id:string}>(`${this.api}/bank-transactions/${id}/reconciliations`,datos)}
+  reglaTributaria(year:number):Observable<ReglaTributaria>{return this.http.get<ReglaTributaria>(`${this.api}/tax/rules`,{params:{year}})}
+  calculosTributarios():Observable<CalculoTributario[]>{return this.http.get<CalculoTributario[]>(`${this.api}/tax/calculations`)}
+  calcularTributos(anioComercial:number,ingresosPreviosSobre50000UF:boolean):Observable<CalculoTributario>{return this.http.post<CalculoTributario>(`${this.api}/tax/calculations`,{anioComercial,ingresosPreviosSobre50000UF})}
+  conversar(datos:{conversacionId:string;mensaje:string;consentimientoExterno:boolean}):Observable<RespuestaAsistente>{return this.http.post<RespuestaAsistente>(`${this.api}/assistant/chat`,datos)}
+  conversaciones():Observable<ConversacionIA[]>{return this.http.get<ConversacionIA[]>(`${this.api}/assistant/conversations`)}
 }
 

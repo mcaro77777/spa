@@ -21,7 +21,11 @@ PORT=8080
 APP_BASE_URL=https://DOMINIO_PUBLICO
 DATABASE_URL=postgres://USUARIO:CLAVE@HOST:PUERTO/bd_inventario?sslmode=disable
 JWT_SECRET=SECRETO_ALEATORIO_DE_AL_MENOS_32_BYTES
+AI_PROVIDER=local
+AI_TIMEOUT_SECONDS=30
 ```
+
+El asistente local no requiere credenciales adicionales. Para habilitar el proveedor OpenAI configure también `OPENAI_API_KEY` y `OPENAI_MODEL` como variables de ejecución y cambie `AI_PROVIDER=openai`. El usuario deberá otorgar consentimiento explícito desde la interfaz antes de enviar agregados anonimizados.
 
 `APP_BASE_URL` debe coincidir exactamente con el origen público, sin `/` final. En producción debe usar HTTPS, ya que la cookie de renovación se marca como `Secure`.
 
