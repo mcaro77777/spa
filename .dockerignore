@@ -1,0 +1,14 @@
+.git
+.gitignore
+.gitattributes
+
+inventario-api
+inventario-web
+spa-web
+PROMPT_MISPA_IA.md
+
+**/.env
+**/.env.*
+**/.dev-uploads
+**/tmp
+**/*.log
