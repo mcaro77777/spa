@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: MiSpA API
-  version: 0.1.0
+  version: 0.2.0
   description: API del MVP de apoyo tributario MiSpA IA. Los cálculos son estimaciones y no sustituyen declaraciones oficiales.
 servers:
   - url: /api
@@ -151,6 +151,76 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/PaginaDocumentos' }
+  /bank-accounts:
+    get:
+      summary: Lista las cuentas bancarias de la empresa activa
+      responses: { '200': { description: Cuentas bancarias } }
+    post:
+      summary: Registra una cuenta bancaria
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CuentaBancariaEntrada' } } }
+      responses:
+        '201': { description: Cuenta creada }
+        '422': { $ref: '#/components/responses/Problema' }
+  /imports/bank-statements:
+    post:
+      summary: Importa una cartola bancaria CSV de forma idempotente
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [cuentaId, archivo]
+              properties:
+                cuentaId: { type: string, format: uuid }
+                archivo: { type: string, format: binary }
+      responses:
+        '201': { description: Cartola procesada }
+        '409': { $ref: '#/components/responses/Problema' }
+        '422': { $ref: '#/components/responses/Problema' }
+  /bank-transactions:
+    get:
+      summary: Lista los movimientos bancarios paginados
+      parameters:
+        - { in: query, name: accountId, schema: { type: string, format: uuid } }
+        - { in: query, name: classification, schema: { type: string } }
+        - { in: query, name: page, schema: { type: integer, minimum: 1 } }
+        - { in: query, name: pageSize, schema: { type: integer, minimum: 1, maximum: 100 } }
+      responses: { '200': { description: Página de movimientos } }
+  /bank-transactions/{id}/classification:
+    patch:
+      summary: Clasifica y justifica un movimiento bancario
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/ClasificacionMovimiento' } } }
+      responses:
+        '200': { description: Clasificación guardada }
+        '422': { $ref: '#/components/responses/Problema' }
+  /bank-transactions/{id}/candidates:
+    get:
+      summary: Sugiere documentos pendientes compatibles con el movimiento
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
+      responses: { '200': { description: Documentos candidatos } }
+  /bank-transactions/{id}/reconciliations:
+    post:
+      summary: Confirma una conciliación parcial o total con un documento
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/ConciliacionEntrada' } } }
+      responses:
+        '201': { description: Conciliación confirmada }
+        '422': { $ref: '#/components/responses/Problema' }
+  /banking/summary:
+    get:
+      summary: Resume conciliaciones, alertas, gastos y movimientos del propietario
+      responses: { '200': { description: Resumen bancario } }
   /dashboard/summary:
     get:
       summary: Obtiene indicadores empresariales preliminares
@@ -192,6 +262,27 @@ components:
   securitySchemes:
     bearerAuth: { type: http, scheme: bearer, bearerFormat: JWT }
   responses:
+    CuentaBancariaEntrada:
+      type: object
+      required: [banco, tipoCuenta, numeroEnmascarado]
+      properties:
+        banco: { type: string, maxLength: 150 }
+        tipoCuenta: { type: string, enum: [corriente, vista, ahorro, credito, otra] }
+        numeroEnmascarado: { type: string, description: Número enmascarado, no la credencial bancaria }
+        moneda: { type: string, default: CLP, minLength: 3, maxLength: 3 }
+    ClasificacionMovimiento:
+      type: object
+      required: [clasificacion]
+      properties:
+        clasificacion: { type: string }
+        justificacion: { type: string, maxLength: 5000 }
+    ConciliacionEntrada:
+      type: object
+      required: [documentoId, monto]
+      properties:
+        documentoId: { type: string, format: uuid }
+        monto: { type: string, description: Decimal exacto positivo }
+        observacion: { type: string, maxLength: 5000 }
     Problema:
       description: Error compatible con RFC 9457
       content:

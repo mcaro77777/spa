@@ -30,6 +30,10 @@ docker compose up --build
 
 Abra `http://localhost:8080`. En la primera inicializacion PostgreSQL aplica el esquema `spa` automaticamente.
 
-## Estado del MVP
+## Estado del producto
 
-Incluye registro, login, refresh token rotatorio, empresas, aislamiento por membresia, importacion CSV idempotente, documentos, dashboard e IVA estimado. Los calculos son informativos y no reemplazan al SII ni la revision de un contador.
+Las fases 1 y 2 incluyen registro, sesión segura, empresas, aislamiento por membresía, documentos e IVA estimado, además de cuentas bancarias, importación idempotente de cartolas CSV, clasificación con justificativos y conciliación parcial o total contra documentos.
+
+Formato de cartola canónico: `fecha`, `descripcion` (también `glosa`), `referencia`, `monto` y `saldo` opcional. Se incluye una plantilla en `spa-api/testdata/cartola_ejemplo.csv`.
+
+Los cálculos y clasificaciones son informativos y no reemplazan al SII ni la revisión de un contador.

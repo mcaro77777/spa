@@ -1,0 +1,4 @@
+fecha;descripcion;referencia;monto;saldo
+2026-11-01;Transferencia cliente Factura 101;TRX-001;119000;520000
+2026-11-03;Pago proveedor servicios;TRX-002;-59500;460500
+2026-11-05;Comisión bancaria;TRX-003;-3500;457000

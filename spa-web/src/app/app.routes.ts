@@ -11,7 +11,8 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent) },
       { path: 'documentos', loadComponent: () => import('./features/documents/documents.component').then((m) => m.DocumentsComponent) },
-      { path: 'importaciones', loadComponent: () => import('./features/imports/imports.component').then((m) => m.ImportsComponent) }
+      { path: 'importaciones', loadComponent: () => import('./features/imports/imports.component').then((m) => m.ImportsComponent) },
+      { path: 'conciliacion', loadComponent: () => import('./features/banking/banking.component').then((m) => m.BankingComponent) }
     ]
   },
   { path: '**', redirectTo: 'app/dashboard' }

@@ -12,4 +12,12 @@ export interface Documento {
 }
 export interface PaginaDocumentos { items: Documento[]; page: number; pageSize: number; total: number; totalPages: number }
 export interface Importacion { id: string; tipo: string; estado: string; totalFilas: number; filasCreadas: number; filasDuplicadas: number; filasRechazadas: number; fechaCreacion?: string }
+export interface CuentaBancaria { id:string; banco:string; tipoCuenta:string; numeroEnmascarado:string; moneda:string; activa:boolean }
+export interface MovimientoBancario {
+  id:string; cuentaId:string; banco:string; cuenta:string; fecha:string; descripcion:string; referencia:string;
+  monto:string; saldo?:string|null; clasificacion:string; origenClasificacion:string; justificacion:string; conciliado:boolean;
+}
+export interface PaginaMovimientos { items:MovimientoBancario[]; page:number; pageSize:number; total:number; totalPages:number }
+export interface ResumenBancario { total:number; pendientes:number; conciliados:number; gastos:number; movimientosPropietario:number; alertas:number }
+export interface CandidatoConciliacion { id:string; tipoDocumento:string; folio:string; fechaEmision:string; montoTotal:string; montoPagado:string; contraparte:string }
 
