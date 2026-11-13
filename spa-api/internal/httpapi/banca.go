@@ -247,6 +247,11 @@ func decimalBancario(v string) (decimal.Decimal, error) {
 	} else if ultimaComa >= 0 {
 		v = strings.ReplaceAll(v, ".", "")
 		v = strings.ReplaceAll(v, ",", ".")
+	} else if ultimoPunto >= 0 {
+		decimales := len(v) - ultimoPunto - 1
+		if strings.Count(v, ".") > 1 || decimales == 3 {
+			v = strings.ReplaceAll(v, ".", "")
+		}
 	}
 	d, err := decimal.NewFromString(v)
 	if err != nil || d.IsZero() {

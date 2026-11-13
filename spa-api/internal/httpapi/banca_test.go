@@ -12,7 +12,7 @@ func TestNormalizarCabeceraBancaria(t *testing.T) {
 }
 
 func TestDecimalBancario(t *testing.T) {
-	casos := map[string]string{"$ 1.234,50": "1234.5", "-45.000": "-45", "1234.50": "1234.5", "-10,25": "-10.25"}
+	casos := map[string]string{"$ 1.234,50": "1234.5", "-45.000": "-45000", "1.234.567": "1234567", "1234.50": "1234.5", "-10,25": "-10.25"}
 	for entrada, esperado := range casos {
 		actual, err := decimalBancario(entrada)
 		if err != nil {
